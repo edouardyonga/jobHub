@@ -32,22 +32,21 @@ Route::get('/', [JobController::class, 'index']);
 Route::get('/jobs/create', [JobController::class, 'create']);
 
 // Single job
+Route::post('/jobs', [JobController::class, 'store']);
+
+// show edit form
+Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+
+// show edit form
+Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+
+// update job
+Route::put('/jobs/{job}', [JobController::class, 'update']);
+
+// Single job
 Route::get('/jobs/{job}', [JobController::class, 'show']);
 
 // Single job
-Route::post('/jobs', [JobController::class, 'store']);
+Route::delete('/jobs/{job}', [JobController::class, 'delete']);
 
-// ----------------------------------
-Route::get('/hello', function () {
-    return response('Hello worl');
-});
 
-Route::get('/posts/{id}', function ($id) {
-    // ddd($id);
-    return response('Post' . $id);
-})->where('id', '[0-9]+');
-
-Route::get('/search', function (Request $request) {
-    // ddd($id);
-    return response($request->name . "" . $request->age);
-});

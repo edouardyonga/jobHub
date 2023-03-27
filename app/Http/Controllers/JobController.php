@@ -65,4 +65,48 @@ class JobController extends Controller
         Session::flash('message', 'Job Successfully created!');
         return Redirect::to('/');
     }
+
+    // edit job
+    public function edit(Job $job)
+    {
+        return view('jobs.edit', [
+            'job' => $job,
+        ]);
+    }
+
+    // update job
+    public function update(Request $request, Job $job)
+    {
+
+        // validate
+        $rules = array(
+            'company'     => 'required',
+            'title'       => 'required',
+            'email'       => 'required|email',
+            'location'    => 'required',
+            'website'     => 'required',
+            'tags'        => 'required',
+            'description' => 'required',
+        );
+
+        $formFields = $request->validate($rules);
+
+        if($request->file()) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        $job->update($formFields);
+
+        Session::flash('message', 'Job Successfully updated!');
+        return Redirect::to('/jobs/'.$job->id);
+    }
+
+     // delete job
+     public function delete(Job $job)
+     {
+        $job->delete();
+
+        Session::flash('message', 'Job Successfully Deleted!');
+        return Redirect::to('/');
+     }
 }
