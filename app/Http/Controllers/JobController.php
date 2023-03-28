@@ -79,6 +79,7 @@ class JobController extends Controller
     // update job
     public function update(Request $request, Job $job)
     {
+        // Make sure logged user is the owner of the Job
         if ($job->user_id !== auth()->id()) {
            abort(403, 'UnAuthorized Action');
         }
@@ -109,6 +110,11 @@ class JobController extends Controller
      // delete job
      public function delete(Job $job)
      {
+        // Make sure logged user is the owner of the Job
+        if ($job->user_id !== auth()->id()) {
+            abort(403, 'UnAuthorized Action');
+         }
+
         $job->delete();
 
         Session::flash('message', 'Job Successfully Deleted!');
