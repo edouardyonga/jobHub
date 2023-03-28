@@ -60,6 +60,8 @@ class JobController extends Controller
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
+        $formFields['user_id'] = auth()->id();
+
         Job::create($formFields);
 
         Session::flash('message', 'Job Successfully created!');
@@ -108,5 +110,13 @@ class JobController extends Controller
 
         Session::flash('message', 'Job Successfully Deleted!');
         return Redirect::to('/');
+     }
+
+     // manage job
+     public function manage()
+     {
+        return view('jobs.manage', [
+            'jobs' => Job::where('user_id', auth()->id())->get(),
+        ]);
      }
 }

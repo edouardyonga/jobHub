@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Relationship With Jobs
+    public function jobs() {
+        return $this->hasMany(Job::class, 'user_id');
+    }
 }

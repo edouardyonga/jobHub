@@ -29,6 +29,9 @@ use Illuminate\Support\Facades\Route;
 // all jobs
 Route::get('/', [JobController::class, 'index']);
 
+// Manage Route
+Route::get('/jobs/manage', [JobController::class, 'manage'])->middleware('auth');
+
 // Create job
 Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth');
 
