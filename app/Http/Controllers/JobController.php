@@ -79,6 +79,9 @@ class JobController extends Controller
     // update job
     public function update(Request $request, Job $job)
     {
+        if ($job->user_id !== auth()->id()) {
+           abort(403, 'UnAuthorized Action');
+        }
 
         // validate
         $rules = array(
