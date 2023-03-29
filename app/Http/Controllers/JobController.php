@@ -20,7 +20,7 @@ class JobController extends Controller
     public function index()
     {
         return view('jobs.index', [
-            'jobs' => Job::latest()->filter(request(['tag', 'search']))->paginate(2),
+            'jobs' => Job::latest()->filter(request(['tag', 'search']))->paginate(4),
         ]);
     }
 
