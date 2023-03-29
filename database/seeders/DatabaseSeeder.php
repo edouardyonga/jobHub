@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Job;
+use App\Models\Member;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,14 +17,26 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // $user = \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        // Job::factory(6)->create([
+        //     'user_id' => $user->id,
+        // ]);
+
+        $team = Team::factory()->create([
+            'name' => 'Test squard',
         ]);
 
-        Job::factory(6)->create([
-            'user_id' => $user->id,
+
+        Member::factory(6)->create([
+            'team_id' => $team->id,
         ]);
+
+        Team::factory(6)->create();
+
 
         // Job::create([
         //     'title' => 'Full-Stack Engineer',

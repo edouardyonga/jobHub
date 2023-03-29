@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Job;
+use App\Models\Member;
 use App\Observers\JobObserver;
 use App\Events\JobCreatedEvent;
+use App\Observers\MemberObserver;
 use App\Listeners\JobCreatedListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -33,6 +35,9 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Job::observe(JobObserver::class);
+
+        Member::observe(MemberObserver::class);
+
     }
 
     /**

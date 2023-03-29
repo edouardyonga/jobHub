@@ -29,36 +29,40 @@ use Illuminate\Support\Facades\Route;
 // all jobs
 Route::get('/', [JobController::class, 'index']);
 
-// Manage Route
-Route::get('/jobs/manage', [JobController::class, 'manage'])->middleware('auth');
+Route::middleware('auth')->group(function () {
+    // Manage Route
+    Route::get('/jobs/manage', [JobController::class, 'manage'])->middleware('auth');
 
-// Create job
-Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth');
+    // Create job
+    Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth');
 
-// Single job
-Route::post('/jobs', [JobController::class, 'store'])->middleware('auth');
+    // Single job
+    Route::post('/jobs', [JobController::class, 'store'])->middleware('auth');
 
-// show edit form
-Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->middleware('auth');
+    // show edit form
+    Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->middleware('auth');
 
-// update job
-Route::put('/jobs/{job}', [JobController::class, 'update'])->middleware('auth');
+    // update job
+    Route::put('/jobs/{job}', [JobController::class, 'update'])->middleware('auth');
+
+    // Single job
+    Route::delete('/jobs/{job}', [JobController::class, 'delete'])->middleware('auth');
+
+    // Logout Route
+    Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
+});
+
+
+Route::middleware('guest')->group(function () {
+
+    // Register Routes
+    Route::get('/register', [UserController::class, 'show'])->middleware('guest');
+    Route::post('/register', [UserController::class, 'register'])->middleware('guest');
+
+    // Login Routes
+    Route::get('/login', [UserController::class, 'login'])->name('login')->middleware('guest');
+    Route::post('/login', [UserController::class, 'auth'])->middleware('guest');
+});
 
 // Single job
 Route::get('/jobs/{job}', [JobController::class, 'show']);
-
-// Single job
-Route::delete('/jobs/{job}', [JobController::class, 'delete'])->middleware('auth');
-
-// Register Routes
-Route::get('/register', [UserController::class, 'show'])->middleware('guest');
-Route::post('/register', [UserController::class, 'register'])->middleware('guest');
-
-// Login Routes
-Route::get('/login', [UserController::class, 'login'])->name('login')->middleware('guest');
-Route::post('/login', [UserController::class, 'auth'])->middleware('guest');
-
-// Logout Route
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
-
-
