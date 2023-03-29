@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Events\JobCreatedEvent;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -55,14 +56,17 @@ class JobController extends Controller
 
         $formFields = $request->validate($rules);
 
-        if($request->file()) {
+        if ($request->file()) {
             // 'file' => 'required|mimes:jpg,png,jpeg,svg|max:5048'
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
         $formFields['user_id'] = auth()->id();
 
-        Job::create($formFields);
+        $post = Job::create($formFields);
+
+        // Event
+        // event(new JobCreatedEvent($post));
 
         Session::flash('message', 'Job Successfully created!');
         return Redirect::to('/');
@@ -81,7 +85,7 @@ class JobController extends Controller
     {
         // Make sure logged user is the owner of the Job
         if ($job->user_id !== auth()->id()) {
-           abort(403, 'UnAuthorized Action');
+            abort(403, 'UnAuthorized Action');
         }
 
         // validate
@@ -97,35 +101,35 @@ class JobController extends Controller
 
         $formFields = $request->validate($rules);
 
-        if($request->file()) {
+        if ($request->file()) {
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
         $job->update($formFields);
 
         Session::flash('message', 'Job Successfully updated!');
-        return Redirect::to('/jobs/'.$job->id);
+        return Redirect::to('/jobs/' . $job->id);
     }
 
-     // delete job
-     public function delete(Job $job)
-     {
+    // delete job
+    public function delete(Job $job)
+    {
         // Make sure logged user is the owner of the Job
         if ($job->user_id !== auth()->id()) {
             abort(403, 'UnAuthorized Action');
-         }
+        }
 
         $job->delete();
 
         Session::flash('message', 'Job Successfully Deleted!');
         return Redirect::to('/');
-     }
+    }
 
-     // manage job
-     public function manage()
-     {
+    // manage job
+    public function manage()
+    {
         return view('jobs.manage', [
             'jobs' => Job::where('user_id', auth()->id())->get(),
         ]);
-     }
+    }
 }
